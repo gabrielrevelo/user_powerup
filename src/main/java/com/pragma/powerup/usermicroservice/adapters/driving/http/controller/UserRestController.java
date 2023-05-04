@@ -25,16 +25,16 @@ import java.util.Map;
 public class UserRestController {
     private final IUserHandler personHandler;
 
-    @Operation(summary = "Add a new user",
+    @Operation(summary = "Add a new Owner",
             responses = {
-                @ApiResponse(responseCode = "201", description = "Person created",
+                @ApiResponse(responseCode = "201", description = "Owner created",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
-                @ApiResponse(responseCode = "409", description = "Person already exists",
+                @ApiResponse(responseCode = "409", description = "Owner already exists",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @PostMapping
-    public ResponseEntity<Map<String, String>> savePerson(@Valid @RequestBody UserRequestDto userRequestDto) {
-        personHandler.saveUser(userRequestDto);
+    @PostMapping("/owner")
+    public ResponseEntity<Map<String, String>> saveOwner(@Valid @RequestBody UserRequestDto userRequestDto) {
+        personHandler.saveOwner(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.PERSON_CREATED_MESSAGE));
+                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.OWNER_CREATED_MESSAGE));
     }
 }
