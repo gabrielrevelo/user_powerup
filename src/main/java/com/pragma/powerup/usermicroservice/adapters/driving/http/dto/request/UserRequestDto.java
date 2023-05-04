@@ -10,9 +10,7 @@ public class UserRequestDto {
     private String surname;
     private String mail;
     private String phone;
-    private String address;
-    private String idDniType;
     private String dniNumber;
-    private String idPersonType;
     private String password;
+    private String dateOfBirth;
 }
