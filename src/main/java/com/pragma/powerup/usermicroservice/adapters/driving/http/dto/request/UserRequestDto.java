@@ -1,11 +1,15 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request;
 
+import com.pragma.powerup.usermicroservice.adapters.driving.http.exceptions.UserUnderAgeException;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.time.LocalDate;
+import java.time.Period;
 
 @AllArgsConstructor
 @Getter
@@ -28,4 +32,12 @@ public class UserRequestDto {
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = Constants.INVALID_FORMAT_MESSAGE)
     private String dateOfBirth;
+
+    public void validateAge() {
+        LocalDate dob = LocalDate.parse(dateOfBirth);
+        int age = Period.between(dob, LocalDate.now()).getYears();
+        if (age < 18) {
+            throw new UserUnderAgeException();
+        }
+    }
 }
