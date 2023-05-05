@@ -7,12 +7,16 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.Period;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Setter
 public class UserRequestDto {
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
     private String name;
