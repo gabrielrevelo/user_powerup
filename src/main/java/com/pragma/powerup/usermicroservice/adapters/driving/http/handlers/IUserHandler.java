@@ -4,4 +4,6 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.Use
 
 public interface IUserHandler {
     void saveOwner(UserRequestDto personRequestDto);
+
+    String getUserRole(String userId);
 }
