@@ -6,7 +6,10 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositorie
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UserRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IUserHandler;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IUserRequestMapper;
+import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.api.IUserServicePort;
+import com.pragma.powerup.usermicroservice.domain.model.Role;
+import com.pragma.powerup.usermicroservice.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +25,23 @@ public class UserHandlerImpl implements IUserHandler {
 
     @Override
     public void saveOwner(UserRequestDto userRequestDto) {
-        userServicePort.saveOwner(userRequestMapper.toUser(userRequestDto));
+        User ownerUser = userRequestMapper.toUser(userRequestDto);
+        Role ownerRole = new Role();
+        ownerRole.setId(Constants.OWNER_ROLE_ID);
+        ownerUser.setRole(ownerRole);
+        userServicePort.saveUser(ownerUser);
     }
 
     @Override
     public String getUserRole(String userId) {
         Optional<UserEntity> userOptional = userRepository.findById(Long.valueOf(userId));
-
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
             RoleEntity role = user.getRole();
-
             if (role != null) {
-                return role.getName(); // Devuelve el nombre del rol
+                return role.getName();
             }
         }
-
-        return null; // Si no se encuentra el usuario o no tiene un rol asignado, devuelve null
+        return null;
     }
 }

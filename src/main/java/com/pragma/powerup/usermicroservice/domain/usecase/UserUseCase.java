@@ -16,11 +16,11 @@ public class UserUseCase implements IUserServicePort {
     }
 
     @Override
-    public void saveOwner(User user) {
+    public void saveUser(User user) {
         int age = Period.between(user.getDateOfBirth(), LocalDate.now()).getYears();
         if (age < 18) {
             throw new UserUnderAgeException();
         }
-        userPersistencePort.saveOwner(user);
+        userPersistencePort.saveUser(user);
     }
 }

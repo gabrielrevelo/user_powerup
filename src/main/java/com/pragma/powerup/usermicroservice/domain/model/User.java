@@ -11,8 +11,9 @@ public class User {
     private String dniNumber;
     private String password;
     private LocalDate dateOfBirth;
+    private Role role;
 
-    public User(Long id, String name, String surname, String mail, String phone, String dniNumber, String password, LocalDate dateOfBirth) {
+    public User(Long id, String name, String surname, String mail, String phone, String dniNumber, String password, LocalDate dateOfBirth, Role role) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -21,6 +22,7 @@ public class User {
         this.dniNumber = dniNumber;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
+        this.role = role;
     }
 
     public Long getId() {
@@ -85,5 +87,13 @@ public class User {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

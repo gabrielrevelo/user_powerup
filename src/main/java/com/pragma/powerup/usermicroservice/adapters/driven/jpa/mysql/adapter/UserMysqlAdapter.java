@@ -17,7 +17,7 @@ public class UserMysqlAdapter implements IUserPersistencePort {
     private final IUserEntityMapper userEntityMapper;
     private final PasswordEncoder passwordEncoder;
     @Override
-    public void saveOwner(User user) {
+    public void saveUser(User user) {
         if (userRepository.findByDniNumber(user.getDniNumber()).isPresent()) {
             throw new PersonAlreadyExistsException();
         }
@@ -26,11 +26,7 @@ public class UserMysqlAdapter implements IUserPersistencePort {
             throw new MailAlreadyExistsException();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        UserEntity ownerUser = userEntityMapper.toEntity(user);
-        RoleEntity ownerRole = new RoleEntity();
-        ownerRole.setId(2L);
-        ownerUser.setRole(ownerRole);
-        userRepository.save(ownerUser);
+        userRepository.save(userEntityMapper.toEntity(user));
     }
 
 
