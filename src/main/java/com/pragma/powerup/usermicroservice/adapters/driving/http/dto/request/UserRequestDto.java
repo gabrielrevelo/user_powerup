@@ -4,6 +4,7 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.exceptions.User
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,22 +27,13 @@ public class UserRequestDto {
     @Email(message = Constants.INVALID_FORMAT_MESSAGE)
     private String mail;
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
-    @Pattern(regexp = "^\\+?[0-9]{1,12}$", message = Constants.INVALID_FORMAT_MESSAGE)
+    @Pattern(regexp = "^\\+?[0-9]{10,12}$", message = Constants.INVALID_FORMAT_MESSAGE)
     private String phone;
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
     @Pattern(regexp = "\\d*", message = Constants.INVALID_FORMAT_MESSAGE)
     private String dniNumber;
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
     private String password;
-    @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = Constants.INVALID_FORMAT_MESSAGE)
-    private String dateOfBirth;
-
-    public void validateAge() {
-        LocalDate dob = LocalDate.parse(dateOfBirth);
-        int age = Period.between(dob, LocalDate.now()).getYears();
-        if (age < 18) {
-            throw new UserUnderAgeException();
-        }
-    }
+    @Past(message = Constants.DATE_CANNOT_BE_PAST_MESSAGE)
+    private LocalDate dateOfBirth;
 }
