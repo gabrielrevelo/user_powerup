@@ -1,29 +1,44 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
-import static org.mockito.Mockito.*;
-
+import com.pragma.powerup.usermicroservice.adapters.driving.http.exceptions.UserUnderAgeException;
 import com.pragma.powerup.usermicroservice.domain.model.User;
 import com.pragma.powerup.usermicroservice.domain.spi.IUserPersistencePort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 class UserUseCaseTest {
 
-    private IUserPersistencePort mockPersistencePort;
+    @Mock
+    private IUserPersistencePort userPersistencePort;
+
     private UserUseCase userUseCase;
 
     @BeforeEach
-    public void setup() {
-        mockPersistencePort = mock(IUserPersistencePort.class);
-        userUseCase = new UserUseCase(mockPersistencePort);
+    void setup() {
+        MockitoAnnotations.openMocks(this);
+        userUseCase = new UserUseCase(userPersistencePort);
     }
 
     @Test
-    void testSaveOwner() {
-        User user = new User(1L, "John", "Doe", "john.doe@example.com", "555-1234", "12345678A", "password", LocalDate.now());
-        userUseCase.saveOwner(user);
-        verify(mockPersistencePort, times(1)).saveOwner(user);
+    void testSaveUser_ThrowsUserUnderAgeException() {
+        User user = new User(null, null, null, null, null, null, null, LocalDate.now().minusYears(16), null);
+
+        assertThrows(UserUnderAgeException.class, () -> userUseCase.saveUser(user));
+    }
+
+    @Test
+    void testSaveUser_Successful() {
+        User user = new User(null, null, null, null, null, null, null, LocalDate.now().minusYears(20), null);
+
+        userUseCase.saveUser(user);
+
+        verify(userPersistencePort, times(1)).saveUser(user);
     }
 }

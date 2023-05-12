@@ -26,7 +26,7 @@ public class UserRequestDto {
     private String surname;
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
     @Pattern(regexp = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = Constants.INVALID_FORMAT_MESSAGE)
-    @Schema(description = "Email", example = "juangomez@email.com")
+    @Schema(description = "Email", example = "juangomez@example.com")
     private String mail;
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
     @Pattern(regexp = "^\\+?[0-9]{12}$", message = Constants.INVALID_FORMAT_MESSAGE)
