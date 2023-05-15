@@ -7,33 +7,51 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user/")
 @RequiredArgsConstructor
 public class UserRestController {
-    private final IUserHandler personHandler;
+    private final IUserHandler userHandler;
 
-    @Operation(summary = "Add a new user",
+    @Operation(summary = "Add a new Owner",
             responses = {
-                @ApiResponse(responseCode = "201", description = "Person created",
+                @ApiResponse(responseCode = "201", description = "Owner created",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
-                @ApiResponse(responseCode = "409", description = "Person already exists",
+                @ApiResponse(responseCode = "409", description = "Owner already exists",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @PostMapping
-    public ResponseEntity<Map<String, String>> savePerson(@RequestBody UserRequestDto userRequestDto) {
-        personHandler.saveUser(userRequestDto);
+    @PostMapping("/owner")
+    public ResponseEntity<Map<String, String>> saveOwner(@Valid @RequestBody UserRequestDto userRequestDto) {
+        userHandler.saveOwner(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.PERSON_CREATED_MESSAGE));
+                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.OWNER_CREATED_MESSAGE));
+    }
+
+    @Operation(summary = "Add a new Owner",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Owner created",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                    @ApiResponse(responseCode = "409", description = "Owner already exists",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @GetMapping("/role/{id}")
+    public ResponseEntity<Map<String, String>> getUserRole(@PathVariable("id") String idUsuario) {
+        String rolPropietario = userHandler.getUserRole(idUsuario);
+
+        if (rolPropietario != null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("role", rolPropietario);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
