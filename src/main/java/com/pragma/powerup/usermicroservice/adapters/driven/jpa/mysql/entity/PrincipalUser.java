@@ -9,17 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PrincipalUser implements UserDetails {
-    private String nombre;
-    private String nombreUsuario;
-    private String email;
+    private String id;
+    private String name;
+    private String mail;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public PrincipalUser(String nombre, String nombreUsuario, String email, String password,
-                         Collection<? extends GrantedAuthority> authorities) {
-        this.nombre = nombre;
-        this.nombreUsuario = nombreUsuario;
-        this.email = email;
+    public PrincipalUser(String id, String name, String mail, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.name = name;
+        this.mail = mail;
         this.password = password;
         this.authorities = authorities;
     }
@@ -27,7 +26,7 @@ public class PrincipalUser implements UserDetails {
     public static PrincipalUser build(UserEntity usuario, List<RoleEntity> roles) {
         List<GrantedAuthority> authorities = roles.stream()
                 .map(rol -> new SimpleGrantedAuthority(rol.getName())).collect(Collectors.toList());
-        return new PrincipalUser(usuario.getName(), usuario.getDniNumber(), usuario.getMail(),
+        return new PrincipalUser(String.valueOf(usuario.getId()), usuario.getName(), usuario.getMail(),
                 usuario.getPassword(), authorities);
     }
 
@@ -43,7 +42,7 @@ public class PrincipalUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nombreUsuario;
+        return id;
     }
 
     @Override
@@ -66,11 +65,11 @@ public class PrincipalUser implements UserDetails {
         return true;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getMail() {
+        return mail;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 }
