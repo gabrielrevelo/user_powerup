@@ -90,4 +90,8 @@ public class JwtProvider {
         return null;
     }
 
+    public String getMail(String token) {
+        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().get("mail", String.class);
+    }
+
 }

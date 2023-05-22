@@ -32,4 +32,5 @@ public class Constants {
     public static final String INVALID_FORMAT_MESSAGE = "Invalid format";
     public static final String USER_UNDER_AGE_MESSAGE = "User must be at least 18 years old";
     public static final String DATE_CANNOT_BE_PAST_MESSAGE = "The date cannot be in the past";
+    public static final String ACCESS_DENIED_MESSAGE = "Access denied. Insufficient permissions.";
 }
