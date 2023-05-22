@@ -21,7 +21,7 @@ public class Constants {
     public static final String ROLE_NOT_FOUND_MESSAGE = "No role found with the id provided";
     public static final String ROLE_NOT_ALLOWED_MESSAGE = "No permission granted to create users with this role";
     public static final String USER_ALREADY_EXISTS_MESSAGE = "A user already exists with the role provided";
-    public static final String USER_NOT_FOUND_MESSAGE = "No user found with the role provided";
+    public static final String USER_NOT_FOUND_MESSAGE = "No user found";
     public static final String SWAGGER_TITLE_MESSAGE = "User API Pragma Power Up";
     public static final String SWAGGER_DESCRIPTION_MESSAGE = "User microservice";
     public static final String SWAGGER_VERSION_MESSAGE = "1.0.0";
@@ -33,4 +33,5 @@ public class Constants {
     public static final String USER_UNDER_AGE_MESSAGE = "User must be at least 18 years old";
     public static final String DATE_CANNOT_BE_PAST_MESSAGE = "The date cannot be in the past";
     public static final String ACCESS_DENIED_MESSAGE = "Access denied. Insufficient permissions.";
+    public static final String RESPONSE_ROLE_KEY = "role";
 }

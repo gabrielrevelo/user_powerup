@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -47,16 +46,8 @@ public class UserRestController {
     @GetMapping("/role/{id}")
     @SecurityRequirement(name = "jwt")
     public ResponseEntity<Map<String, String>> getUserRole(@PathVariable("id") String idUsuario) {
-
-
         String rolPropietario = userHandler.getUserRole(idUsuario);
-
-        if (rolPropietario != null) {
-            Map<String, String> response = new HashMap<>();
-            response.put("role", rolPropietario);
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Collections.singletonMap(Constants.RESPONSE_ROLE_KEY, rolPropietario));
     }
 }
