@@ -37,11 +37,11 @@ public class RoleRestController {
         return ResponseEntity.ok(roleHandler.getAllRoles());
     }
 
-    @Operation(summary = "Get role of user",
+    @Operation(summary = "Get role name of user",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Owner created",
-                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
-                    @ApiResponse(responseCode = "409", description = "Owner already exists",
+                    @ApiResponse(responseCode = "200", description = "Role name of user returned",
+                            content = @Content(mediaType = "application/json", schema = @Schema(example = "{\"error\": \"User not found\"}"))),
+                    @ApiResponse(responseCode = "404", description = "User not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @GetMapping("/{id}")
     @SecurityRequirement(name = "jwt")

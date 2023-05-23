@@ -27,6 +27,8 @@ public class UserRestController {
             responses = {
                 @ApiResponse(responseCode = "201", description = "Owner created",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                @ApiResponse(responseCode = "400", description = "Owner not created",
+                        content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error"))),
                 @ApiResponse(responseCode = "409", description = "Owner already exists",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PostMapping("/owner")

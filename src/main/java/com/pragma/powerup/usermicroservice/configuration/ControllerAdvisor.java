@@ -26,8 +26,10 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.*;
 public class ControllerAdvisor {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, List<String>>> handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, List<String>> errorResponse = new HashMap<>();
         List<String> errorMessages = new ArrayList<>();
+
         for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             if (error instanceof FieldError fieldError) {
                 errorMessages.add(fieldError.getField() + ": " + fieldError.getDefaultMessage());
@@ -35,12 +37,14 @@ public class ControllerAdvisor {
                 errorMessages.add(error.getDefaultMessage());
             }
         }
-        return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
+
+        errorResponse.put("error", errorMessages);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Map<String, String>> handleAuthenticationException(AuthenticationException noDataFoundException) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, WRONG_CREDENTIALS_MESSAGE));
     }
 
@@ -95,7 +99,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(UserUnderAgeException.class)
     public ResponseEntity<Map<String, String>> handleUserUnderAgeException(
             UserUnderAgeException userUnderAgeException) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, USER_UNDER_AGE_MESSAGE));
     }
 }
