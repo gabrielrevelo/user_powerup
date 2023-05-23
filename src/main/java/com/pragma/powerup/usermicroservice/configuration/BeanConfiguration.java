@@ -27,7 +27,7 @@ public class BeanConfiguration {
     private final PasswordEncoder passwordEncoder;
     @Bean
     public IRoleServicePort roleServicePort() {
-        return new RoleUseCase(rolePersistencePort());
+        return new RoleUseCase(rolePersistencePort(), userPersistencePort());
     }
     @Bean
     public IRolePersistencePort rolePersistencePort() {

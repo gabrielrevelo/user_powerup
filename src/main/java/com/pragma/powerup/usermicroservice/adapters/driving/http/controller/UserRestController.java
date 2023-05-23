@@ -36,18 +36,4 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.OWNER_CREATED_MESSAGE));
     }
-
-    @Operation(summary = "Get role of user",
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "Owner created",
-                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
-                    @ApiResponse(responseCode = "409", description = "Owner already exists",
-                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @GetMapping("/role/{id}")
-    @SecurityRequirement(name = "jwt")
-    public ResponseEntity<Map<String, String>> getUserRole(@PathVariable("id") String idUsuario) {
-        String rolPropietario = userHandler.getUserRole(idUsuario);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(Collections.singletonMap(Constants.RESPONSE_ROLE_KEY, rolPropietario));
-    }
 }
