@@ -38,6 +38,8 @@ public class JwtProvider {
         List<String> roles = usuarioPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         return Jwts.builder()
                 .setSubject(usuarioPrincipal.getUsername())
+                .claim("name", usuarioPrincipal.getName())
+                .claim("mail", usuarioPrincipal.getMail())
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expiration * 180))
@@ -86,6 +88,10 @@ public class JwtProvider {
                     .compact();
         }
         return null;
+    }
+
+    public String getMail(String token) {
+        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().get("mail", String.class);
     }
 
 }
