@@ -36,7 +36,7 @@ public class UserRestController {
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.OWNER_CREATED_MESSAGE));
     }
 
-    @Operation(summary = "Add a new Owner",
+    @Operation(summary = "Get user role",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Owner created",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),

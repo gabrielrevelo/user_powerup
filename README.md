@@ -56,6 +56,17 @@ To get a local copy up and running follow these steps.
 1. Right-click the class PowerUpApplication and choose Run
 2. Open [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) in your web browser
 
+### Validations
+
+* Currently, it doesn't have any kind of security; the role is not checked in any case. Login is not required.
+
+| Field                   | Requirement                                                                                                                               | Example                         |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
+| Phone Number            | The phone number should be in Colombian format, with the respective prefix. <br> The "+" sign at the beginning of the number is optional. | +573001234567 <br> 573001234567 |
+| Identification Document | The identification document should follow the format of a Colombian national identification card (Cédula de Ciudadanía -  CC).            | 1234567890                      |
+| Date of Birth           | The date of birth should comply with the requirement that the user must be of legal age (+18).                                            | 2005-01-01                      |
+
+
 <!-- ROADMAP -->
 ## Tests
 

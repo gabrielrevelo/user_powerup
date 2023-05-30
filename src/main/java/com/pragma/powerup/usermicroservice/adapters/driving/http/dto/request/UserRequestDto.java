@@ -37,7 +37,7 @@ public class UserRequestDto {
     @Schema(description = "Identification Document Number", example = "1234567890")
     private String dniNumber;
     @NotEmpty(message = Constants.EMPTY_FIELD_MESSAGE)
-    @Schema(description = "Password", example = "Password123!")
+    @Schema(description = "Password", example = "Password123")
     private String password;
     @Past(message = Constants.DATE_CANNOT_BE_PAST_MESSAGE)
     @Schema(description = "Date of Birth", example = "2000-02-20")
