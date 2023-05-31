@@ -20,9 +20,21 @@ public class UserHandlerImpl implements IUserHandler {
     @Override
     public void saveOwner(UserRequestDto userRequestDto) {
         User ownerUser = userRequestMapper.toUser(userRequestDto);
-        Role ownerRole = new Role();
-        ownerRole.setId(OWNER_ROLE_ID);
-        ownerUser.setRole(ownerRole);
+        ownerUser.setRole(new Role(OWNER_ROLE_ID));
         userServicePort.saveUser(ownerUser);
+    }
+
+    @Override
+    public void saveEmployee(UserRequestDto userRequestDto) {
+        User employeeUser = userRequestMapper.toUser(userRequestDto);
+        employeeUser.setRole(new Role(EMPLOYEE_ROLE_ID));
+        userServicePort.saveUser(employeeUser);
+    }
+
+    @Override
+    public void saveClient(UserRequestDto userRequestDto) {
+        User clientUser = userRequestMapper.toUser(userRequestDto);
+        clientUser.setRole(new Role(CLIENT_ROLE_ID));
+        userServicePort.saveUser(clientUser);
     }
 }
