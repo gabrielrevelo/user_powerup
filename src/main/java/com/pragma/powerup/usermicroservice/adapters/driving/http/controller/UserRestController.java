@@ -1,7 +1,9 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UserRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.UserResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IUserHandler;
+import com.pragma.powerup.usermicroservice.configuration.ApiResult;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -49,10 +51,10 @@ public class UserRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PostMapping("/employee")
     @SecurityRequirement(name = "jwt")
-    public ResponseEntity<Map<String, String>> saveEmployee(@Valid @RequestBody UserRequestDto userRequestDto) {
-        userHandler.saveEmployee(userRequestDto);
+    public ResponseEntity<ApiResult<UserResponseDto>> saveEmployee(@Valid @RequestBody UserRequestDto userRequestDto) {
+        UserResponseDto employee = userHandler.saveEmployee(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.EMPLOYEE_CREATED_MESSAGE));
+                .body(new ApiResult<>(true, Constants.EMPLOYEE_CREATED_MESSAGE, employee, null));
     }
 
     @Operation(summary = "Add a new Client",
