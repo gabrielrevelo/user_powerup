@@ -3,8 +3,9 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RoleResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IRoleHandler;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
+import com.pragma.powerup.usermicroservice.configuration.response.CustomApiResponse;
+import com.pragma.powerup.usermicroservice.configuration.response.SuccessfulApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @RestController()
 @RequestMapping("/role")
@@ -28,13 +27,13 @@ public class RoleRestController {
     @Operation(summary = "Get all the roles",
             responses = {
                     @ApiResponse(responseCode = "200", description = "All roles returned",
-                            content = @Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = RoleResponseDto.class)))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiResponse.class))),
                     @ApiResponse(responseCode = "404", description = "No data found",
-                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiResponse.class)))})
     @GetMapping("")
-    public ResponseEntity<List<RoleResponseDto>> getAllRoles() {
-        return ResponseEntity.ok(roleHandler.getAllRoles());
+    public ResponseEntity<SuccessfulApiResponse<List<RoleResponseDto>>> getAllRoles() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new SuccessfulApiResponse<>(roleHandler.getAllRoles()));
     }
 
     @Operation(summary = "Get role name of user",
@@ -45,9 +44,9 @@ public class RoleRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @GetMapping("/{id}")
     @SecurityRequirement(name = "jwt")
-    public ResponseEntity<Map<String, String>> getUserRole(@PathVariable("id") Long idUser) {
-        String rolPropietario = roleHandler.getRoleName(idUser);
+    public ResponseEntity<SuccessfulApiResponse<RoleResponseDto>> getUserRole(@PathVariable("id") Long idUser) {
+        RoleResponseDto userRole = roleHandler.getUserRole(idUser);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(Collections.singletonMap(Constants.RESPONSE_ROLE_KEY, rolPropietario));
+                .body(new SuccessfulApiResponse<>(Constants.RESPONSE_ROLE_KEY, userRole));
     }
 }

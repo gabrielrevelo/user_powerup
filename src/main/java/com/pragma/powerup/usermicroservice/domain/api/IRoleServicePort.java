@@ -7,5 +7,5 @@ import java.util.List;
 public interface IRoleServicePort {
     List<Role> getAllRoles();
 
-    String getRoleName(Long idUser);
+    Role getUserRole(Long idUser);
 }
