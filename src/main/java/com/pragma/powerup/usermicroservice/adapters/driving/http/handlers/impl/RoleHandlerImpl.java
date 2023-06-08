@@ -21,7 +21,8 @@ public class RoleHandlerImpl implements IRoleHandler {
     }
 
     @Override
-    public String getRoleName(Long userId) {
-        return roleServicePort.getRoleName(userId);
+    public RoleResponseDto getUserRole(Long userId) {
+
+        return roleResponseMapper.toResponse(roleServicePort.getUserRole(userId));
     }
 }

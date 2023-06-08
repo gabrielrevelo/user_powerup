@@ -24,7 +24,7 @@ public class RoleUseCase implements IRoleServicePort {
     }
 
     @Override
-    public String getRoleName(Long idUser) {
-        return userPersistencePort.findUserById(idUser).getRole().getName();
+    public Role getUserRole(Long idUser) {
+        return userPersistencePort.findUserById(idUser).getRole();
     }
 }

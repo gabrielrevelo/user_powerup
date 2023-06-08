@@ -1,4 +1,4 @@
-package com.pragma.powerup.usermicroservice.configuration;
+package com.pragma.powerup.usermicroservice.configuration.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -8,9 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ApiResult<T> {
+public class CustomApiResponse<T> {
     private boolean success;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ErrorDetails error;

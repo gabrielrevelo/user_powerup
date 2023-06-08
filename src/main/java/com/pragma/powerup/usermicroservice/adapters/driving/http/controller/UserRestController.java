@@ -3,8 +3,9 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UserRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.UserResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IUserHandler;
-import com.pragma.powerup.usermicroservice.configuration.ApiResult;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
+import com.pragma.powerup.usermicroservice.configuration.response.CustomApiResponse;
+import com.pragma.powerup.usermicroservice.configuration.response.SuccessfulApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,9 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/user/")
 @RequiredArgsConstructor
@@ -28,17 +26,17 @@ public class UserRestController {
     @Operation(summary = "Add a new Owner",
             responses = {
                 @ApiResponse(responseCode = "201", description = "Owner created",
-                        content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiResponse.class))),
                 @ApiResponse(responseCode = "400", description = "Owner not created",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error"))),
                 @ApiResponse(responseCode = "409", description = "Owner already exists",
                         content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PostMapping("/owner")
     @SecurityRequirement(name = "jwt")
-    public ResponseEntity<Map<String, String>> saveOwner(@Valid @RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<SuccessfulApiResponse<Void>> saveOwner(@Valid @RequestBody UserRequestDto userRequestDto) {
         userHandler.saveOwner(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.OWNER_CREATED_MESSAGE));
+                .body(new SuccessfulApiResponse<>(Constants.OWNER_CREATED_MESSAGE));
     }
 
     @Operation(summary = "Add a new Employee",
@@ -51,10 +49,10 @@ public class UserRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PostMapping("/employee")
     @SecurityRequirement(name = "jwt")
-    public ResponseEntity<ApiResult<UserResponseDto>> saveEmployee(@Valid @RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<SuccessfulApiResponse<UserResponseDto>> saveEmployee(@Valid @RequestBody UserRequestDto userRequestDto) {
         UserResponseDto employee = userHandler.saveEmployee(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResult<>(true, Constants.EMPLOYEE_CREATED_MESSAGE, employee, null));
+                .body(new SuccessfulApiResponse<>(Constants.EMPLOYEE_CREATED_MESSAGE, employee));
     }
 
     @Operation(summary = "Add a new Client",
@@ -67,9 +65,9 @@ public class UserRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PostMapping("/client")
     @SecurityRequirement(name = "jwt")
-    public ResponseEntity<Map<String, String>> saveClient(@Valid @RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<SuccessfulApiResponse<Void>> saveClient(@Valid @RequestBody UserRequestDto userRequestDto) {
         userHandler.saveClient(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.CLIENT_CREATED_MESSAGE));
+                .body(new SuccessfulApiResponse<>(Constants.CLIENT_CREATED_MESSAGE));
     }
 }

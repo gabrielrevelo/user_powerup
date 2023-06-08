@@ -3,6 +3,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.LoginRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.JwtResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IAuthHandler;
+import com.pragma.powerup.usermicroservice.configuration.response.SuccessfulApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +24,15 @@ public class AuthController {
     private final IAuthHandler authHandler;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
-        return new ResponseEntity<>(authHandler.login(loginRequestDto), HttpStatus.OK);
+    public ResponseEntity<SuccessfulApiResponse<JwtResponseDto>> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new SuccessfulApiResponse<>(authHandler.login(loginRequestDto)));
     }
 
     @PostMapping("/refresh")
     @SecurityRequirement(name = "jwt")
-    public ResponseEntity<JwtResponseDto> refresh(@RequestBody JwtResponseDto jwtResponseDto) throws ParseException {
-        return new ResponseEntity<>(authHandler.refresh(jwtResponseDto), HttpStatus.OK);
+    public ResponseEntity<SuccessfulApiResponse<JwtResponseDto>> refresh(@RequestBody JwtResponseDto jwtResponseDto) throws ParseException {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new SuccessfulApiResponse<>(authHandler.refresh(jwtResponseDto)));
     }
 }
