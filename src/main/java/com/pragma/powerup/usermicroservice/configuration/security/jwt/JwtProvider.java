@@ -39,6 +39,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(usuarioPrincipal.getUsername())
                 .claim("name", usuarioPrincipal.getName())
+                .claim("phone", usuarioPrincipal.getPhone())
                 .claim("mail", usuarioPrincipal.getMail())
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
