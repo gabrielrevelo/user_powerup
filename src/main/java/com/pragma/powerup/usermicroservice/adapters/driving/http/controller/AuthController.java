@@ -5,6 +5,7 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.Jw
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IAuthHandler;
 import com.pragma.powerup.usermicroservice.configuration.response.SuccessfulApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Auth Controller", description = "Controller for managing authentication")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -29,10 +31,10 @@ public class AuthController {
                 .body(new SuccessfulApiResponse<>(authHandler.login(loginRequestDto)));
     }
 
-    @PostMapping("/refresh")
+/*    @PostMapping("/refresh")
     @SecurityRequirement(name = "jwt")
     public ResponseEntity<SuccessfulApiResponse<JwtResponseDto>> refresh(@RequestBody JwtResponseDto jwtResponseDto) throws ParseException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new SuccessfulApiResponse<>(authHandler.refresh(jwtResponseDto)));
-    }
+    }*/
 }

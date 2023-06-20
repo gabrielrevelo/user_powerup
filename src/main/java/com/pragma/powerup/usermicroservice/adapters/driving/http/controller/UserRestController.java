@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user/")
+@Tag(name = "User Controller", description = "Controller for managing users")
 @RequiredArgsConstructor
 public class UserRestController {
     private final IUserHandler userHandler;
 
-    @Operation(summary = "Add a new Owner",
+    @Operation(summary = "[ADMIN] Add a new Owner",
             responses = {
                 @ApiResponse(responseCode = "201", description = "Owner created",
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomApiResponse.class))),
@@ -39,7 +41,7 @@ public class UserRestController {
                 .body(new SuccessfulApiResponse<>(Constants.OWNER_CREATED_MESSAGE));
     }
 
-    @Operation(summary = "Add a new Employee",
+    @Operation(summary = "[OWNER] Add a new Employee",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Employee created",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
